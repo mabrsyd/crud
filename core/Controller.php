@@ -1,7 +1,9 @@
 <?php
 
+// Kelas dasar controller untuk render view dan redirect.
 class Controller
 {
+    // Memuat file view berdasarkan path dan mengirim data ke view.
     protected function view(string $path, array $data = []): void
     {
         $viewFile = BASE_PATH . "/views/" . $path . ".php";
@@ -14,6 +16,7 @@ class Controller
         require_once $viewFile;
     }
 
+    // Mengalihkan browser ke URL tertentu.
     protected function redirect(string $url): void
     {
         header("Location: " . $url);

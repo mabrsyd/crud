@@ -1,9 +1,11 @@
 <?php
 
+// Menyediakan satu koneksi PDO yang dipakai ulang oleh semua model.
 class Database
 {
     private static ?PDO $connection = null;
 
+    // Membuat koneksi database jika belum ada, lalu mengembalikan instance PDO.
     public static function getConnection(): PDO
     {
         if (self::$connection instanceof PDO) {

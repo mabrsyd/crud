@@ -1,5 +1,7 @@
 <?php require_once __DIR__ . "/../partials/header.php"; ?>
 
+<!-- Halaman form tambah data master A. -->
+
 <?php $moduleLabel = $moduleLabel ?? "Entity A"; ?>
 
 <section class="card">

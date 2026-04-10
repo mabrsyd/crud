@@ -1,5 +1,6 @@
 <?php
 
+// Konfigurasi global aplikasi (debug dan default route).
 class AppConfig
 {
     // Ubah nilai DEBUG menjadi false saat aplikasi masuk produksi.

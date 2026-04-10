@@ -6,6 +6,7 @@ require_once __DIR__ . "/../helpers/Validator.php";
 require_once __DIR__ . "/../helpers/Debug.php";
 require_once __DIR__ . "/../config/StarterPack.php";
 
+// Controller modul utama untuk proses CRUD entity.
 class EntityController extends Controller
 {
     private Entity $model;
@@ -15,6 +16,7 @@ class EntityController extends Controller
         $this->model = new Entity();
     }
 
+    // Menampilkan daftar data entity.
     public function index(): void
     {
         $items = $this->model->all();
@@ -32,6 +34,7 @@ class EntityController extends Controller
         ]);
     }
 
+    // Menampilkan form tambah data entity.
     public function create(): void
     {
         $moduleLabel = StarterPackConfig::label("entity");
@@ -42,6 +45,7 @@ class EntityController extends Controller
         ]);
     }
 
+    // Memproses simpan data baru dari form create.
     public function store(): void
     {
         $moduleLabel = StarterPackConfig::label("entity");
@@ -67,6 +71,7 @@ class EntityController extends Controller
         $this->redirect($this->buildUrl("index", $message));
     }
 
+    // Menampilkan form edit berdasarkan ID data.
     public function edit(int $id = 0): void
     {
         $moduleLabel = StarterPackConfig::label("entity");
@@ -82,6 +87,7 @@ class EntityController extends Controller
         ]);
     }
 
+    // Memproses update data entity.
     public function update(): void
     {
         $moduleLabel = StarterPackConfig::label("entity");
@@ -107,6 +113,7 @@ class EntityController extends Controller
         $this->redirect($this->buildUrl("index", $message));
     }
 
+    // Menghapus data entity berdasarkan ID.
     public function delete(int $id = 0): void
     {
         $moduleLabel = StarterPackConfig::label("entity");
@@ -124,6 +131,7 @@ class EntityController extends Controller
         $this->redirect($this->buildUrl("index", $message));
     }
 
+    // Membuat URL redirect agar query controller/action tetap konsisten.
     private function buildUrl(string $action, string $message = "", ?int $id = null): string
     {
         $url = BASE_URL . "?controller=entity&action=" . $action;

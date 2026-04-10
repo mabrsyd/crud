@@ -1,5 +1,7 @@
 <?php require_once __DIR__ . "/../partials/header.php"; ?>
 
+<!-- Halaman form ubah data entity. -->
+
 <?php $item = $item ?? ["id" => 0, "nama" => "", "keterangan" => ""]; ?>
 <?php $moduleLabel = $moduleLabel ?? "Entity"; ?>
 

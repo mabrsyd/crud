@@ -6,6 +6,7 @@ require_once __DIR__ . "/../helpers/Validator.php";
 require_once __DIR__ . "/../helpers/Debug.php";
 require_once __DIR__ . "/../config/StarterPack.php";
 
+// Controller untuk data relasi (join + dropdown + simpan relasi).
 class RelationController extends Controller
 {
     private Relation $model;
@@ -15,6 +16,7 @@ class RelationController extends Controller
         $this->model = new Relation();
     }
 
+    // Menampilkan daftar relasi dengan hasil JOIN.
     public function index(): void
     {
         $items = $this->model->allWithJoin();
@@ -29,6 +31,7 @@ class RelationController extends Controller
         ]);
     }
 
+    // Menampilkan form relasi beserta data dropdown dari master A dan B.
     public function create(): void
     {
         $moduleLabel = StarterPackConfig::label("relation");
@@ -59,6 +62,7 @@ class RelationController extends Controller
         ]);
     }
 
+    // Memproses simpan relasi baru dari form create.
     public function store(): void
     {
         $moduleLabel = StarterPackConfig::label("relation");
@@ -87,6 +91,7 @@ class RelationController extends Controller
         $this->redirect($this->buildUrl("index", $message));
     }
 
+    // Menghapus data relasi berdasarkan ID.
     public function delete(int $id = 0): void
     {
         $moduleLabel = StarterPackConfig::label("relation");

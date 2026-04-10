@@ -1,7 +1,9 @@
 <?php
 
+// Helper validasi input sederhana untuk field wajib isi.
 class Validator
 {
+    // Mengecek field yang wajib diisi, lalu mengembalikan daftar error.
     public static function required(array $data, array $fields): array
     {
         $errors = [];

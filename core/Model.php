@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/../config/Database.php";
 
+// Kelas dasar model yang berisi operasi CRUD umum.
 abstract class Model
 {
     protected PDO $conn;
@@ -12,6 +13,7 @@ abstract class Model
         $this->conn = Database::getConnection();
     }
 
+    // Mengambil semua data pada tabel aktif.
     public function all(): array
     {
         $sql = "SELECT * FROM {$this->table} ORDER BY id DESC";
@@ -21,6 +23,7 @@ abstract class Model
         return $stmt->fetchAll();
     }
 
+    // Mengambil satu data berdasarkan ID.
     public function find(int $id): ?array
     {
         $sql = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
@@ -31,6 +34,7 @@ abstract class Model
         return $data !== false ? $data : null;
     }
 
+    // Menghapus data berdasarkan ID.
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM {$this->table} WHERE id = :id";

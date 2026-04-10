@@ -2,8 +2,10 @@
 
 require_once __DIR__ . "/../config/App.php";
 
+// Router sederhana berbasis query string controller/action.
 class Router
 {
+    // Menentukan controller dan action lalu menjalankan method yang sesuai.
     public function dispatch(): void
     {
         $controllerParam = $_GET["controller"] ?? AppConfig::DEFAULT_CONTROLLER;
@@ -42,6 +44,7 @@ class Router
         $controllerObject->{$action}();
     }
 
+    // Membersihkan input URL agar hanya karakter aman yang diproses.
     private function sanitizeSegment(string $segment): string
     {
         return preg_replace("/[^a-zA-Z0-9_]/", "", $segment) ?? "";

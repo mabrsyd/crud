@@ -1,14 +1,17 @@
 # MVC Template SKKNI (PHP Native)
 
-Template ini dibuat untuk kebutuhan ujian/latihan SKKNI Programmer dengan pendekatan:
+Dokumen ini menjelaskan fungsi arsitektur project secara lengkap supaya mudah dipakai saat ujian dan mudah diulang saat latihan mandiri.
 
-- PHP Native
-- Pola MVC (Model, View, Controller)
-- OOP + prepared statement (aman dari SQL injection)
-- CRUD + relasi JOIN + dropdown otomatis
-- Struktur reusable (mudah di-rename)
+## 1. Tujuan Template
 
-## 1. Struktur Project
+Template ini dibuat untuk:
+
+1. Menyediakan kerangka MVC Native PHP yang ringkas.
+2. Mempercepat pembuatan CRUD dasar.
+3. Menangani relasi JOIN + dropdown otomatis.
+4. Menjadi starter reusable untuk tema soal apa pun.
+
+## 2. Struktur Project
 
 ```text
 mvc-template-skkni/
@@ -40,6 +43,7 @@ mvc-template-skkni/
 |   `-- RelationController.php
 |
 |-- views/
+|   |-- partials/
 |   |-- entity/
 |   |-- entityA/
 |   |-- entityB/
@@ -49,175 +53,218 @@ mvc-template-skkni/
 |   `-- EntityTest.php
 |
 |-- docs/
-|   `-- README.md
+|   |-- README.md
+|   `-- schema.sql
 |
 `-- index.php
 ```
 
-## 2. Cara Install
+## 3. Arsitektur dan Fungsi Tiap Komponen
 
-1. Copy folder `mvc-template-skkni` ke htdocs (XAMPP) atau folder web server Anda.
-2. Buat database baru, contoh: `mvc_template_skkni`.
-3. Import file `docs/schema.sql` atau jalankan SQL berikut di MySQL:
+### 3.1 Config
 
-```sql
-CREATE TABLE entity (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nama VARCHAR(100) NOT NULL,
-    keterangan TEXT NULL
-);
+1. App.php
+    - Mengatur mode DEBUG.
+    - Menentukan default controller dan action.
 
-CREATE TABLE entity_a (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nama VARCHAR(100) NOT NULL
-);
+2. Database.php
+    - Membuat koneksi PDO sekali pakai (singleton sederhana).
+    - Menetapkan mode error PDO::ERRMODE_EXCEPTION.
+    - Menyediakan konfigurasi via environment variable.
 
-CREATE TABLE entity_b (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nama VARCHAR(100) NOT NULL
-);
+3. StarterPack.php
+    - Mengatur label tampilan per modul.
+    - Mengatur nama tabel per modul.
+    - Mengatur nama kolom relasi agar query fleksibel.
 
-CREATE TABLE relation (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    entity_a_id INT NOT NULL,
-    entity_b_id INT NOT NULL,
-    tanggal DATE NOT NULL,
-    CONSTRAINT fk_relation_entity_a FOREIGN KEY (entity_a_id) REFERENCES entity_a(id) ON DELETE CASCADE,
-    CONSTRAINT fk_relation_entity_b FOREIGN KEY (entity_b_id) REFERENCES entity_b(id) ON DELETE CASCADE
-);
-```
+### 3.2 Core
 
-4. Atur koneksi database di file `config/Database.php` atau lewat environment variable berikut:
-   - `DB_HOST`
-   - `DB_PORT`
-   - `DB_NAME`
-   - `DB_USER`
-   - `DB_PASS`
+1. Controller.php
+    - Method view(path, data): render file view.
+    - Method redirect(url): redirect halaman.
 
-5. Jalankan aplikasi:
-   - Jika pakai Apache: akses sesuai virtual host/localhost.
-   - Jika pakai built-in server PHP:
+2. Model.php
+    - Menyimpan koneksi DB di property conn.
+    - Menyediakan operasi all(), find(id), delete(id).
+    - Menjadi parent class semua model.
+
+3. Router.php
+    - Membaca query string controller dan action.
+    - Menjalankan controller/action valid.
+    - Menjaga default route saat parameter kosong.
+
+### 3.3 Helpers
+
+1. Validator.php
+    - required(data, fields): cek field wajib isi.
+    - Mengembalikan array error per field.
+
+2. Debug.php
+    - dd(data): dump variabel dan stop proses.
+    - Hanya aktif saat AppConfig::DEBUG = true.
+
+### 3.4 Models
+
+1. Entity.php
+    - Model utama dengan field nama + keterangan.
+
+2. EntityA.php
+    - Model master A.
+
+3. EntityB.php
+    - Model master B.
+
+4. Relation.php
+    - allWithJoin(): membaca data gabungan dari 3 tabel.
+    - getEntityA(), getEntityB(): sumber dropdown relasi.
+    - create(): menyimpan data relasi.
+
+### 3.5 Controllers
+
+1. EntityController.php
+    - CRUD untuk modul utama.
+
+2. EntityAController.php
+    - CRUD untuk master A.
+
+3. EntityBController.php
+    - CRUD untuk master B.
+
+4. RelationController.php
+    - Menampilkan JOIN relasi.
+    - Menampilkan form dropdown relasi.
+    - Menyimpan dan menghapus relasi.
+
+### 3.6 Views
+
+1. views/partials/header.php
+    - Layout bagian atas (menu, judul, style).
+
+2. views/partials/footer.php
+    - Layout bagian bawah.
+
+3. views/entity, views/entityA, views/entityB
+    - index.php: tabel daftar data.
+    - create.php: form tambah data.
+    - edit.php: form ubah data.
+
+4. views/relation
+    - index.php: daftar data JOIN.
+    - create.php: form relasi dengan dropdown.
+
+### 3.7 Tests
+
+1. tests/EntityTest.php
+    - Uji sederhana method create() pada model Entity.
+    - Output: TEST BERHASIL / TEST GAGAL.
+
+## 4. Alur Request (Request Flow)
+
+1. User akses index.php.
+2. index.php load config, register autoload, lalu jalankan Router.
+3. Router memilih controller/action dari URL.
+4. Controller memanggil model untuk ambil/simpan data.
+5. Controller me-render view dengan data.
+6. View menampilkan hasil ke browser.
+
+## 5. Cara Install dan Menjalankan
+
+1. Copy folder project ke web root.
+2. Buat database bernama mvc_template_skkni.
+3. Import docs/schema.sql.
+4. Atur koneksi di config/Database.php.
+5. Jalankan server:
 
 ```bash
 php -S localhost:8000 -t mvc-template-skkni
 ```
 
-6. Buka URL:
+6. Buka:
 
 ```text
 http://localhost:8000/index.php
 ```
 
-## 3. Routing Dasar
+## 6. Routing yang Tersedia
 
-Router membaca URL query string:
-
-- `?controller=entity&action=index`
-- `?controller=entity&action=create`
-- `?controller=entityA&action=index`
-- `?controller=entityB&action=index`
-- `?controller=relation&action=index`
+1. ?controller=entity&action=index
+2. ?controller=entityA&action=index
+3. ?controller=entityB&action=index
+4. ?controller=relation&action=index
 
 Default route:
 
-- `entity/index`
+1. entity/index
 
-Jika action tidak ditemukan, router akan melempar error validasi method.
+## 7. Penjelasan Debug dan Validator
 
-## 4. Penjelasan Relasi (JOIN + Dropdown)
+### Validator
 
-Relasi menggunakan 3 tabel:
+Validator::required() dipakai sebelum proses simpan/update untuk memastikan data inti tidak kosong.
 
-- `entity_a (id, nama)`
-- `entity_b (id, nama)`
-- `relation (id, entity_a_id, entity_b_id, tanggal)`
+### Debug
 
-Implementasi di `models/Relation.php`:
+Debug::dd() dipakai saat inspeksi data:
 
-- `allWithJoin()` untuk join 3 tabel dan menampilkan alias `nama_a`, `nama_b`
-- `getEntityA()` untuk data dropdown entity A
-- `getEntityB()` untuk data dropdown entity B
-- `create()` untuk simpan relasi
+1. Debug daftar data.
+2. Debug hasil validasi.
+3. Debug hasil dropdown relasi.
 
-Di view `views/relation/create.php`, dropdown sudah memiliki opsi default:
+Catatan:
+
+1. Jika DEBUG true, dd akan tampil dan menghentikan proses.
+2. Jika DEBUG false, dd tidak menampilkan apa pun.
+
+## 8. Mode Starter Pack (Ubah 1 File)
+
+File yang diubah hanya:
+
+1. config/StarterPack.php
+
+Yang bisa diganti dari file ini:
+
+1. Judul aplikasi.
+2. Label menu modul.
+3. Nama tabel modul.
+4. Nama kolom relasi.
+
+## 9. SQL Relasi Dasar
+
+Tabel relasi menggunakan struktur:
+
+1. entity_a (id, nama)
+2. entity_b (id, nama)
+3. relation (id, entity_a_id, entity_b_id, tanggal)
+
+Dropdown pada form relasi sudah memiliki opsi default:
 
 ```html
 <option value="">-- pilih --</option>
 ```
 
-## 5. Unit Testing Sederhana
-
-File test ada di:
-
-- `tests/EntityTest.php`
-
-Cara jalanin:
+## 10. Cara Menjalankan Unit Test
 
 ```bash
 php tests/EntityTest.php
 ```
 
-Output:
+Hasil test:
 
-- `TEST BERHASIL`
-- `TEST GAGAL`
+1. TEST BERHASIL
+2. TEST GAGAL
 
-## 6. Mode Starter Pack (Cukup Ubah 1 File)
+## 11. Checklist Latihan Ulang Mandiri
 
-Sekarang template sudah punya mode starter pack.
-Anda tidak perlu rename banyak file model/controller/view.
+1. Jalankan project dari nol.
+2. Input data di EntityA dan EntityB.
+3. Buat relasi dari menu Relation.
+4. Pastikan halaman JOIN menampilkan nama, bukan ID.
+5. Ulang dengan mengganti mapping di StarterPack.
 
-File yang cukup diubah:
+## 12. Standar Kode yang Dipakai
 
-- `config/StarterPack.php`
-
-Yang bisa disesuaikan dari file itu:
-
-- label menu dan judul halaman
-- nama tabel untuk modul entity/entityA/entityB/relation
-- nama kolom relasi (`entityAColumn`, `entityBColumn`, `dateColumn`)
-
-Contoh tema ujian: mahasiswa, buku, transaksi
-
-```php
-public const MODULES = [
-    "entity" => ["label" => "Data Utama", "table" => "data_utama"],
-    "entityA" => ["label" => "Mahasiswa", "table" => "mahasiswa"],
-    "entityB" => ["label" => "Buku", "table" => "buku"],
-    "relation" => ["label" => "Transaksi", "table" => "transaksi"],
-];
-
-public const RELATION = [
-    "entityAColumn" => "mahasiswa_id",
-    "entityBColumn" => "buku_id",
-    "dateColumn" => "tanggal",
-];
-```
-
-Setelah ubah mapping, aplikasi otomatis ikut menyesuaikan label dan query relasi.
-
-## 7. Debugging
-
-Gunakan helper `Debug::dd()` untuk menampilkan isi variabel dan menghentikan proses.
-
-Contoh yang sudah tersedia:
-
-- Debug data index di `EntityController::index`
-- Debug validasi input di proses `store/update`
-- Debug data dropdown di `RelationController::create`
-
-`Debug::dd()` hanya aktif saat:
-
-- `AppConfig::DEBUG = true`
-
-Jika `DEBUG = false`, `dd()` tidak akan menampilkan output.
-
-## 8. Catatan Standar Kode
-
-Template ini mengikuti ketentuan utama:
-
-- menggunakan `require_once`
-- prepared statement untuk query
-- pemisahan logic (controller/model) dan tampilan (view)
-- penamaan konsisten dan mudah diikuti
-- komentar singkat dengan bahasa Indonesia
+1. require_once untuk load file.
+2. Prepared statement untuk query.
+3. Logic dipisah antara model-controller-view.
+4. Penamaan file dan class konsisten.
+5. Komentar penting ditambahkan di file inti untuk memudahkan belajar.

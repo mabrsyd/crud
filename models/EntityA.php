@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../core/Model.php";
 require_once __DIR__ . "/../config/StarterPack.php";
 
+// Model untuk master data sisi A pada relasi.
 class EntityA extends Model
 {
     protected string $table = "";
@@ -13,6 +14,7 @@ class EntityA extends Model
         $this->table = StarterPackConfig::table("entityA");
     }
 
+    // Menyimpan data entityA baru.
     public function create(array $data): bool
     {
         $sql = "INSERT INTO {$this->table} (nama) VALUES (:nama)";
@@ -23,6 +25,7 @@ class EntityA extends Model
         ]);
     }
 
+    // Mengubah data entityA berdasarkan ID.
     public function update(int $id, array $data): bool
     {
         $sql = "UPDATE {$this->table} SET nama = :nama WHERE id = :id";

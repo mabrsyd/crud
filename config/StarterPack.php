@@ -1,5 +1,6 @@
 <?php
 
+// Konfigurasi cepat untuk mengganti label modul, tabel, dan kolom relasi.
 class StarterPackConfig
 {
     // Judul aplikasi utama untuk navbar/header.
@@ -20,16 +21,19 @@ class StarterPackConfig
         "dateColumn" => "tanggal",
     ];
 
+    // Mengambil label modul untuk tampilan menu dan judul halaman.
     public static function label(string $moduleKey): string
     {
         return self::MODULES[$moduleKey]["label"] ?? $moduleKey;
     }
 
+    // Mengambil nama tabel berdasarkan modul yang dipilih.
     public static function table(string $moduleKey): string
     {
         return self::MODULES[$moduleKey]["table"] ?? $moduleKey;
     }
 
+    // Mengambil nama kolom relasi agar query join tetap dinamis.
     public static function relationColumn(string $columnKey): string
     {
         return self::RELATION[$columnKey] ?? $columnKey;

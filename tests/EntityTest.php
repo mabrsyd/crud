@@ -1,5 +1,7 @@
 <?php
 
+// Tes sederhana untuk memastikan proses create pada model Entity berjalan.
+
 require_once __DIR__ . "/../config/App.php";
 require_once __DIR__ . "/../config/Database.php";
 require_once __DIR__ . "/../core/Model.php";

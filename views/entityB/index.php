@@ -1,5 +1,7 @@
 <?php require_once __DIR__ . "/../partials/header.php"; ?>
 
+<!-- Halaman daftar data master B. -->
+
 <?php $moduleLabel = $moduleLabel ?? "Entity B"; ?>
 <?php $moduleLabelLower = strtolower($moduleLabel); ?>
 

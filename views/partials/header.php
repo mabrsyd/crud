@@ -1,4 +1,5 @@
 <?php
+// Partial header: menyiapkan judul, menu, dan style umum seluruh halaman.
 $pageTitle = $title ?? "MVC Template SKKNI";
 $currentController = $_GET["controller"] ?? "entity";
 $message = $_GET["message"] ?? "";

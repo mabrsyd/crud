@@ -1,5 +1,7 @@
 <?php
 
+// Titik masuk aplikasi: siapkan konfigurasi dasar, autoload, lalu jalankan router.
+
 define("BASE_PATH", __DIR__);
 
 require_once BASE_PATH . "/config/App.php";

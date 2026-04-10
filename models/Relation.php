@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../core/Model.php";
 require_once __DIR__ . "/../config/StarterPack.php";
 
+// Model relasi untuk membaca data join dan menyimpan transaksi relasi.
 class Relation extends Model
 {
     protected string $table = "";
@@ -13,6 +14,7 @@ class Relation extends Model
         $this->table = StarterPackConfig::table("relation");
     }
 
+    // Mengambil data relasi lengkap dengan nama dari tabel master A dan B.
     public function allWithJoin(): array
     {
         $tableEntityA = StarterPackConfig::table("entityA");
@@ -41,6 +43,7 @@ class Relation extends Model
         return $stmt->fetchAll();
     }
 
+    // Mengambil opsi dropdown untuk master A.
     public function getEntityA(): array
     {
         $tableEntityA = StarterPackConfig::table("entityA");
@@ -51,6 +54,7 @@ class Relation extends Model
         return $stmt->fetchAll();
     }
 
+    // Mengambil opsi dropdown untuk master B.
     public function getEntityB(): array
     {
         $tableEntityB = StarterPackConfig::table("entityB");
@@ -61,6 +65,7 @@ class Relation extends Model
         return $stmt->fetchAll();
     }
 
+    // Menyimpan relasi baru sesuai konfigurasi kolom dinamis.
     public function create(array $data): bool
     {
         $fkEntityA = StarterPackConfig::relationColumn("entityAColumn");

@@ -1,5 +1,7 @@
 <?php require_once __DIR__ . "/../partials/header.php"; ?>
 
+<!-- Halaman form tambah relasi dengan dropdown dinamis. -->
+
 <?php $entityAOptions = $entityAOptions ?? []; ?>
 <?php $entityBOptions = $entityBOptions ?? []; ?>
 <?php $moduleLabel = $moduleLabel ?? "Relation"; ?>

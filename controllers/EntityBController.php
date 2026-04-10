@@ -6,6 +6,7 @@ require_once __DIR__ . "/../helpers/Validator.php";
 require_once __DIR__ . "/../helpers/Debug.php";
 require_once __DIR__ . "/../config/StarterPack.php";
 
+// Controller untuk CRUD master data sisi B.
 class EntityBController extends Controller
 {
     private EntityB $model;
@@ -15,6 +16,7 @@ class EntityBController extends Controller
         $this->model = new EntityB();
     }
 
+    // Menampilkan daftar data entityB.
     public function index(): void
     {
         $items = $this->model->all();
@@ -27,6 +29,7 @@ class EntityBController extends Controller
         ]);
     }
 
+    // Menampilkan form tambah entityB.
     public function create(): void
     {
         $moduleLabel = StarterPackConfig::label("entityB");
@@ -37,6 +40,7 @@ class EntityBController extends Controller
         ]);
     }
 
+    // Menyimpan data entityB baru.
     public function store(): void
     {
         $moduleLabel = StarterPackConfig::label("entityB");
@@ -60,6 +64,7 @@ class EntityBController extends Controller
         $this->redirect($this->buildUrl("index", $message));
     }
 
+    // Menampilkan form edit entityB.
     public function edit(int $id = 0): void
     {
         $moduleLabel = StarterPackConfig::label("entityB");
@@ -75,6 +80,7 @@ class EntityBController extends Controller
         ]);
     }
 
+    // Memproses update data entityB.
     public function update(): void
     {
         $moduleLabel = StarterPackConfig::label("entityB");
@@ -98,6 +104,7 @@ class EntityBController extends Controller
         $this->redirect($this->buildUrl("index", $message));
     }
 
+    // Menghapus data entityB berdasarkan ID.
     public function delete(int $id = 0): void
     {
         $moduleLabel = StarterPackConfig::label("entityB");

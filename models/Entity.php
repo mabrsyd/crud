@@ -3,6 +3,7 @@
 require_once __DIR__ . "/../core/Model.php";
 require_once __DIR__ . "/../config/StarterPack.php";
 
+// Model untuk modul utama dengan field nama dan keterangan.
 class Entity extends Model
 {
     protected string $table = "";
@@ -13,6 +14,7 @@ class Entity extends Model
         $this->table = StarterPackConfig::table("entity");
     }
 
+    // Menyimpan data baru ke tabel entity.
     public function create(array $data): bool
     {
         $sql = "INSERT INTO {$this->table} (nama, keterangan) VALUES (:nama, :keterangan)";
@@ -24,6 +26,7 @@ class Entity extends Model
         ]);
     }
 
+    // Mengubah data entity berdasarkan ID.
     public function update(int $id, array $data): bool
     {
         $sql = "UPDATE {$this->table} SET nama = :nama, keterangan = :keterangan WHERE id = :id";

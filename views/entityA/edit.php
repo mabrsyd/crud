@@ -1,5 +1,7 @@
 <?php require_once __DIR__ . "/../partials/header.php"; ?>
 
+<!-- Halaman form ubah data master A. -->
+
 <?php $item = $item ?? ["id" => 0, "nama" => ""]; ?>
 <?php $moduleLabel = $moduleLabel ?? "Entity A"; ?>
 

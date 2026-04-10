@@ -1,5 +1,7 @@
 <?php require_once __DIR__ . "/../partials/header.php"; ?>
 
+<!-- Halaman daftar relasi dengan hasil JOIN tabel master. -->
+
 <?php $moduleLabel = $moduleLabel ?? "Relation"; ?>
 <?php $moduleLabelLower = strtolower($moduleLabel); ?>
 <?php $entityALabel = $entityALabel ?? "Entity A"; ?>

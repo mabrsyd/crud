@@ -1,3 +1,4 @@
+<!-- Partial footer untuk penutup layout semua halaman. -->
     </main>
 
     <footer class="site-footer">
